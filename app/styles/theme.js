@@ -3,21 +3,22 @@ const colors = {
   black: '#344846',
   white: '#FFFFFF',
   red: '#FC6681',
-  gray: 'rgba(50, 56, 66, 0.6)'
-}
+  gray: 'rgba(50, 56, 66, 0.6)',
+  grayLight: 'rgba(50, 56, 66, 0.3)',
+};
 
 const sizes = {
   monster: 40,
   h1: 24,
   h2: 16,
-  text: 16
-}
+  text: 14,
+  border: 10,
+};
 
 const fonts = {
-  h1: {
-    fontFamily: 'Kanit-Bold',
-    fontSize: sizes.h2
-  }
-}
+  light: 'Kanit-Light',
+  regular: 'Kanit-Regular',
+  bold: 'Kanit-Bold',
+};
 
-export { colors, sizes, fonts }
+export {colors, sizes, fonts};
