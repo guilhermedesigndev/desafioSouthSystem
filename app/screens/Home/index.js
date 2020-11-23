@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 
 import {
   HomeContainer,
@@ -6,29 +6,15 @@ import {
   ContainerLogo,
   ContainerLogoText,
   Content,
-  EmptyContainer,
-  ImageEmpty,
-  EmptyText,
   ButtonSearch,
   ButtonSearchLabel,
 } from './styles';
 
-import {useDispatch, useSelector} from 'react-redux';
-import {Creators as BooksActions} from '~/store/ducks/books';
+import EmpryState from '~/components/EmptyState';
 
 import Image from '~/assets/images/home.png';
 
 export default function Home({navigation}) {
-  const dispatch = useDispatch();
-
-  const books = useSelector((state) => state.books);
-
-  useEffect(() => {
-    dispatch(BooksActions.getBooks({name: 'sprint'}));
-  }, [dispatch]);
-
-  console.log('Books: ', books);
-
   return (
     <HomeContainer>
       <Header>
@@ -39,14 +25,15 @@ export default function Home({navigation}) {
       </Header>
 
       <Content>
-        <EmptyContainer>
-          <ImageEmpty source={Image} />
-          <EmptyText>Você ainda não salvou nenhum livro por aqui</EmptyText>
-
-          <ButtonSearch>
-            <ButtonSearchLabel>Procurar livros</ButtonSearchLabel>
-          </ButtonSearch>
-        </EmptyContainer>
+        <EmpryState
+          image={Image}
+          title={'Você ainda não salvou nenhum livro por aqui'}
+          footer={
+            <ButtonSearch onPress={() => navigation.navigate('Search')}>
+              <ButtonSearchLabel>Procurar livros</ButtonSearchLabel>
+            </ButtonSearch>
+          }
+        />
       </Content>
     </HomeContainer>
   );

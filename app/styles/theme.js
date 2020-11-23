@@ -12,6 +12,7 @@ const sizes = {
   h1: 24,
   h2: 16,
   text: 14,
+  base: 12,
   border: 10,
 };
 

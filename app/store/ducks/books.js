@@ -14,7 +14,6 @@ export default function books(state = INITIAL_STATE, action) {
   return produce(state, (draft) => {
     switch (action.type) {
       case Types.GET_BOOKS_SUCCESS: {
-        console.log('ACTION: ', action);
         draft.books = action.payload.items;
         break;
       }

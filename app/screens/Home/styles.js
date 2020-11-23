@@ -31,21 +31,6 @@ export const Content = styled.View`
   justify-content: center;
 `;
 
-export const EmptyContainer = styled.View`
-  align-items: center;
-`;
-
-export const ImageEmpty = styled.Image``;
-
-export const EmptyText = styled.Text`
-  font-family: ${theme.fonts.light};
-  font-size: ${theme.sizes.h1 - 5}px;
-  color: ${theme.colors.gray};
-  text-align: center;
-
-  margin-top: 58px;
-`;
-
 export const ButtonSearch = styled.TouchableOpacity`
   width: 100%;
   height: 60px;
