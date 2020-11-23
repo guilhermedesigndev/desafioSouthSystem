@@ -65,8 +65,6 @@ export default function books(state = INITIAL_STATE, action) {
             (book) => book.id !== action.payload.idBook,
           );
 
-          console.log('INDEX: ', indexBook);
-
           if (indexBook > -1) {
             books[indexBook].isFavorite = true;
           } else {

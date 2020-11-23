@@ -102,7 +102,7 @@ export default function Search() {
           </IconSearch>
         </InputContainer>
 
-        {books.length > 0 ? (
+        {books?.length > 0 ? (
           <ListBooks
             data={books}
             keyExtractor={(item) => item.id}

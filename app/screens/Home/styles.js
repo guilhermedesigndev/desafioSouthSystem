@@ -24,6 +24,7 @@ export const ContainerLogoText = styled.Text`
   font-size: ${(props) =>
     props.bold ? theme.sizes.monster : theme.sizes.h1}px;
   color: ${theme.colors.black};
+  margin-top: ${(props) => (props.bold ? -10 : 0)}px;
 `;
 
 export const Content = styled.View`

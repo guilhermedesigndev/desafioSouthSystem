@@ -70,9 +70,9 @@ export default function BookDetail({book}) {
             <ButtonFavoriteBookContainer>
               <ButtonFavoriteBook onPress={handleFavoriteOrRemove}>
                 <Icon
-                  name={book?.isFavorite ? 'heart' : 'heart-outline'}
+                  name={isBookFavorite() ? 'heart' : 'heart-outline'}
                   color={
-                    book?.isFavorite ? theme.colors.red : theme.colors.grayLight
+                    isBookFavorite() ? theme.colors.red : theme.colors.grayLight
                   }
                 />
               </ButtonFavoriteBook>
