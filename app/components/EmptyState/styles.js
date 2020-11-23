@@ -36,7 +36,7 @@ export const ButtonActionLabel = styled.Text`
 
 export const Loading = styled.ActivityIndicator.attrs({
   size: 'small',
-  color: theme.colors.primary,
+  color: theme.colors.black,
 })`
   flex: 1;
   justify-content: center;

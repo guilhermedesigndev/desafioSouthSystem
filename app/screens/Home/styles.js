@@ -31,6 +31,41 @@ export const Content = styled.View`
   justify-content: center;
 `;
 
+export const ListBooksFavorites = styled.FlatList``;
+
+export const SeparatorList = styled.View`
+  margin-left: 10px;
+`;
+
+export const TitleListFavoritesContainer = styled.View`
+  flex-direction: row;
+  margin-top: 34px;
+  margin-bottom: 20px;
+`;
+
+export const TitleListFavorites = styled.Text`
+  font-family: ${theme.fonts.semiBold};
+  font-size: ${theme.sizes.h2}px;
+  color: ${theme.colors.black};
+  margin-left: 10px;
+`;
+
+export const ListItemContainer = styled.View`
+  width: 100px;
+`;
+
+export const BookInfoTitle = styled.Text`
+  font-family: ${theme.fonts.bold};
+  font-size: ${theme.sizes.h2}px;
+  color: ${theme.colors.black};
+`;
+
+export const BookInfoText = styled.Text`
+  font-family: ${theme.fonts.light};
+  font-size: ${theme.sizes.h2}px;
+  color: ${theme.colors.gray};
+`;
+
 export const ButtonSearch = styled.TouchableOpacity`
   width: 100%;
   height: 60px;

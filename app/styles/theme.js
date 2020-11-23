@@ -19,6 +19,7 @@ const sizes = {
 const fonts = {
   light: 'Kanit-Light',
   regular: 'Kanit-Regular',
+  semiBold: 'Kanit-SemiBold',
   bold: 'Kanit-Bold',
 };
 

@@ -5,13 +5,18 @@ export const Types = {
   GET_BOOKS_SUCCESS: 'books/GET_BOOKS_SUCCESS',
   GET_BOOKS_FALIURE: 'books/GET_BOOKS_FALIURE',
 
+  ADD_BOOK_FAVORITE: 'books/ADD_BOOK_FAVORITE',
+  REMOVE_BOOK_FAVORITE: 'books/REMOVE_BOOK_FAVORITE',
+
   BOOKS_CLEAN: 'books/BOOKS_CLEAN',
+  CHECK_BOOK_FAVORITE: 'books/CHECK_BOOK_FAVORITE',
 };
 
 const INITIAL_STATE = {
   books: [],
   booksLoading: false,
   booksDone: false,
+  booksFavorite: [],
 };
 
 export default function books(state = INITIAL_STATE, action) {
@@ -36,8 +41,38 @@ export default function books(state = INITIAL_STATE, action) {
       }
 
       case Types.BOOKS_CLEAN: {
-        console.log('AQUI');
         draft.books = [];
+        break;
+      }
+
+      case Types.ADD_BOOK_FAVORITE: {
+        draft.booksFavorite = draft.booksFavorite.concat(action.payload.book);
+        break;
+      }
+
+      case Types.REMOVE_BOOK_FAVORITE: {
+        draft.booksFavorite = draft.booksFavorite.filter(
+          (book) => book.id !== action.payload.idBook,
+        );
+        break;
+      }
+
+      case Types.CHECK_BOOK_FAVORITE: {
+        const {books} = draft;
+
+        if (Array.isArray(books)) {
+          const indexBook = books.findIndex(
+            (book) => book.id !== action.payload.idBook,
+          );
+
+          console.log('INDEX: ', indexBook);
+
+          if (indexBook > -1) {
+            books[indexBook].isFavorite = true;
+          } else {
+            books[indexBook].isFavorite = false;
+          }
+        }
         break;
       }
 
@@ -54,5 +89,20 @@ export const Creators = {
 
   cleanBooks: () => ({
     type: Types.BOOKS_CLEAN,
+  }),
+
+  addBookFavorite: ({book}) => ({
+    type: Types.ADD_BOOK_FAVORITE,
+    payload: {book},
+  }),
+
+  removeBookFavorite: ({idBook}) => ({
+    type: Types.REMOVE_BOOK_FAVORITE,
+    payload: {idBook},
+  }),
+
+  checkBookIsFavorite: ({idBook}) => ({
+    type: Types.CHECK_BOOK_FAVORITE,
+    payload: {idBook},
   }),
 };

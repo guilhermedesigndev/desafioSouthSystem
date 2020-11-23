@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, {useEffect, useCallback} from 'react';
 import ImageBook from '~/components/ImageBook';
 
 import {
@@ -21,10 +20,42 @@ import {
 
 import * as theme from '~/styles/theme';
 
+import {useDispatch, useSelector} from 'react-redux';
+import {Creators as BooksActions} from '~/store/ducks/books';
+
 import Icon from '~/components/Icon';
 
 export default function BookDetail({book}) {
-  console.log('Book: ', book);
+  const dispatch = useDispatch();
+
+  const booksFavorite = useSelector((state) => state.books.booksFavorite);
+
+  useEffect(() => {
+    dispatch(BooksActions.checkBookIsFavorite({idBook: book?.id}));
+  }, [dispatch, book.id]);
+
+  function isBookFavorite() {
+    for (let i = 0; i < booksFavorite.length; i++) {
+      if (booksFavorite[i].id === book?.id) {
+        return true;
+      }
+
+      return false;
+    }
+  }
+
+  function handleFavoriteOrRemove() {
+    dispatch(BooksActions.checkBookIsFavorite({idBook: book?.id}));
+
+    if (book?.isFavorite) {
+      dispatch(BooksActions.removeBookFavorite({idBook: book?.id}));
+    } else {
+      dispatch(BooksActions.addBookFavorite({book}));
+    }
+  }
+
+  console.log('Books Favorite: ', book);
+
   return (
     <Container>
       <BookContainer>
@@ -37,8 +68,13 @@ export default function BookDetail({book}) {
             </BookInfoTitle>
 
             <ButtonFavoriteBookContainer>
-              <ButtonFavoriteBook>
-                <Icon name="heart-outline" color={theme.colors.grayLight} />
+              <ButtonFavoriteBook onPress={handleFavoriteOrRemove}>
+                <Icon
+                  name={book?.isFavorite ? 'heart' : 'heart-outline'}
+                  color={
+                    book?.isFavorite ? theme.colors.red : theme.colors.grayLight
+                  }
+                />
               </ButtonFavoriteBook>
             </ButtonFavoriteBookContainer>
           </BookInfoTitleContainer>
