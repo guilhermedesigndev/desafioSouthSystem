@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect} from 'react';
 import ImageBook from '~/components/ImageBook';
 
 import {
@@ -53,8 +53,6 @@ export default function BookDetail({book}) {
       dispatch(BooksActions.addBookFavorite({book}));
     }
   }
-
-  console.log('Books Favorite: ', book);
 
   return (
     <Container>

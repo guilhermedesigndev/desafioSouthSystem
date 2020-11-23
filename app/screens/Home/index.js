@@ -72,7 +72,6 @@ export default function Home({navigation}) {
               renderItem={renderItem}
               showsHorizontalScrollIndicator={false}
               ItemSeparatorComponent={() => <SeparatorList />}
-              //contentContainerStyle={{marginRight: 24}}
             />
           </>
         ) : (
