@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useRef} from 'react';
+import {Modalize} from 'react-native-modalize';
 
 import {
   HomeContainer,
@@ -25,14 +26,27 @@ import * as theme from '~/styles/theme';
 
 import Image from '~/assets/images/home.png';
 
-import {useSelector} from 'react-redux';
+import BookDetail from '~/screens/BookDetail';
+
+import {useDispatch, useSelector} from 'react-redux';
+import {Creators as BooksActions} from '~/store/ducks/books';
 
 export default function Home({navigation}) {
+  const dispatch = useDispatch();
+
   const booksFavorite = useSelector((state) => state.books.booksFavorite);
+
+  const modalizeRef = useRef(null);
+
+  function openModal() {
+    modalizeRef.current?.open();
+  }
 
   function renderItem({item}) {
     return (
-      <ListItemContainer>
+      <ListItemContainer
+        onPressIn={() => dispatch(BooksActions.bookSelecionado({book: item}))}
+        onPress={openModal}>
         <ImageBook source={item?.volumeInfo?.imageLinks?.thumbnail} />
 
         <BookInfoTitle numberOfLines={1}>
@@ -86,6 +100,10 @@ export default function Home({navigation}) {
           />
         )}
       </Content>
+
+      <Modalize ref={modalizeRef} snapPoint={400}>
+        <BookDetail />
+      </Modalize>
     </HomeContainer>
   );
 }

@@ -26,7 +26,7 @@ export const BookInfoTitleContainer = styled.View`
 export const BookInfoTitle = styled.Text`
   flex: 1;
   font-family: ${theme.fonts.bold};
-  font-size: ${theme.sizes.h1}px;
+  font-size: ${theme.sizes.h2 + 3}px;
   color: ${theme.colors.black};
   margin-right: 10px;
 `;
@@ -77,7 +77,7 @@ export const BookDescriptionContainer = styled.View`
 
 export const BookDescriptionLabel = styled.Text`
   font-family: ${theme.fonts.bold};
-  font-size: ${theme.sizes.h1}px;
+  font-size: ${theme.sizes.h2 + 3}px;
   color: ${theme.colors.black};
   margin-bottom: 10px;
 `;

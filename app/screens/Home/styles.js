@@ -51,7 +51,7 @@ export const TitleListFavorites = styled.Text`
   margin-left: 10px;
 `;
 
-export const ListItemContainer = styled.View`
+export const ListItemContainer = styled.TouchableOpacity`
   width: 100px;
 `;
 

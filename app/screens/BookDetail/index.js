@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import ImageBook from '~/components/ImageBook';
 
 import {
@@ -23,62 +23,50 @@ import * as theme from '~/styles/theme';
 import {useDispatch, useSelector} from 'react-redux';
 import {Creators as BooksActions} from '~/store/ducks/books';
 
+import dayjs from '~/services/dayjs';
+
 import Icon from '~/components/Icon';
 
-export default function BookDetail({book}) {
+export default function BookDetail() {
   const dispatch = useDispatch();
 
-  const booksFavorite = useSelector((state) => state.books.booksFavorite);
-
-  useEffect(() => {
-    dispatch(BooksActions.checkBookIsFavorite({idBook: book?.id}));
-  }, [dispatch, book.id]);
-
-  function isBookFavorite() {
-    for (let i = 0; i < booksFavorite.length; i++) {
-      if (booksFavorite[i].id === book?.id) {
-        return true;
-      }
-
-      return false;
-    }
-  }
+  const selecionado = useSelector((state) => state.books.bookSelecionado);
 
   function handleFavoriteOrRemove() {
-    dispatch(BooksActions.checkBookIsFavorite({idBook: book?.id}));
-
-    if (book?.isFavorite) {
-      dispatch(BooksActions.removeBookFavorite({idBook: book?.id}));
+    if (selecionado?.isFavorite) {
+      dispatch(BooksActions.removeBookFavorite({idBook: selecionado?.id}));
     } else {
-      dispatch(BooksActions.addBookFavorite({book}));
+      dispatch(BooksActions.addBookFavorite({book: selecionado}));
     }
   }
 
   return (
     <Container>
       <BookContainer>
-        <ImageBook source={book?.volumeInfo?.imageLinks?.thumbnail} />
+        <ImageBook source={selecionado?.volumeInfo?.imageLinks?.thumbnail} />
 
         <BookInfoContainer>
           <BookInfoTitleContainer>
             <BookInfoTitle numberOfLines={1}>
-              {book?.volumeInfo?.title}
+              {selecionado?.volumeInfo?.title}
             </BookInfoTitle>
 
             <ButtonFavoriteBookContainer>
               <ButtonFavoriteBook onPress={handleFavoriteOrRemove}>
                 <Icon
-                  name={isBookFavorite() ? 'heart' : 'heart-outline'}
+                  name={selecionado?.isFavorite ? 'heart' : 'heart-outline'}
                   color={
-                    isBookFavorite() ? theme.colors.red : theme.colors.grayLight
+                    selecionado?.isFavorite
+                      ? theme.colors.red
+                      : theme.colors.grayLight
                   }
                 />
               </ButtonFavoriteBook>
             </ButtonFavoriteBookContainer>
           </BookInfoTitleContainer>
 
-          {book?.volumeInfo?.authors && (
-            <BookInfoText>{book?.volumeInfo?.authors[0]}</BookInfoText>
+          {selecionado?.volumeInfo?.authors && (
+            <BookInfoText>{selecionado?.volumeInfo?.authors[0]}</BookInfoText>
           )}
 
           <BookDateContainer>
@@ -88,7 +76,9 @@ export default function BookDetail({book}) {
               width={16}
               height={16}
             />
-            <BookInfoText>{book?.volumeInfo?.publishedDate}</BookInfoText>
+            <BookInfoText>
+              {dayjs(selecionado?.volumeInfo?.publishedDate).format('YYYY')}
+            </BookInfoText>
           </BookDateContainer>
 
           <BookPageContainer>
@@ -98,23 +88,27 @@ export default function BookDetail({book}) {
               width={16}
               height={16}
             />
-            <BookInfoText>{book?.volumeInfo?.pageCount} Paginas</BookInfoText>
+            <BookInfoText>
+              {selecionado?.volumeInfo?.pageCount} Paginas
+            </BookInfoText>
           </BookPageContainer>
-          {book?.volumeInfo?.categories && (
+          {selecionado?.volumeInfo?.categories && (
             <BookCategoryLabel>
-              {book?.volumeInfo?.categories[0]}
+              {selecionado?.volumeInfo?.categories[0]}
             </BookCategoryLabel>
           )}
         </BookInfoContainer>
       </BookContainer>
 
-      <BookDescriptionContainer>
-        <BookDescriptionLabel>Descriçao</BookDescriptionLabel>
+      {selecionado?.volumeInfo?.description && (
+        <BookDescriptionContainer>
+          <BookDescriptionLabel>Descriçao</BookDescriptionLabel>
 
-        <BookDescriptionText>
-          {book?.volumeInfo?.description}
-        </BookDescriptionText>
-      </BookDescriptionContainer>
+          <BookDescriptionText>
+            {selecionado?.volumeInfo?.description}
+          </BookDescriptionText>
+        </BookDescriptionContainer>
+      )}
     </Container>
   );
 }

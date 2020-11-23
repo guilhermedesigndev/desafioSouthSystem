@@ -9,7 +9,7 @@ export const Types = {
   REMOVE_BOOK_FAVORITE: 'books/REMOVE_BOOK_FAVORITE',
 
   BOOKS_CLEAN: 'books/BOOKS_CLEAN',
-  CHECK_BOOK_FAVORITE: 'books/CHECK_BOOK_FAVORITE',
+  BOOK_SELECIONADO: 'books/BOOK_SELECIONADO',
 };
 
 const INITIAL_STATE = {
@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   booksLoading: false,
   booksDone: false,
   booksFavorite: [],
+  bookSelecionado: {},
 };
 
 export default function books(state = INITIAL_STATE, action) {
@@ -34,7 +35,7 @@ export default function books(state = INITIAL_STATE, action) {
         break;
       }
       case Types.GET_BOOKS_FALIURE: {
-        draft.books = action.payload.items;
+        draft.books = [];
         draft.booksLoading = false;
         draft.booksDone = false;
         break;
@@ -42,11 +43,29 @@ export default function books(state = INITIAL_STATE, action) {
 
       case Types.BOOKS_CLEAN: {
         draft.books = [];
+        draft.bookSelecionado = {};
         break;
       }
 
       case Types.ADD_BOOK_FAVORITE: {
-        draft.booksFavorite = draft.booksFavorite.concat(action.payload.book);
+        const {books, bookSelecionado} = draft;
+
+        const newBookFavorite = {
+          ...action.payload.book,
+          isFavorite: true,
+        };
+
+        draft.booksFavorite = draft.booksFavorite.concat(newBookFavorite);
+
+        if (Array.isArray(books)) {
+          const indexBook = books.findIndex(
+            (book) => book.id === action.payload.book.id,
+          );
+
+          books[indexBook].isFavorite = true;
+          bookSelecionado.isFavorite = true;
+        }
+
         break;
       }
 
@@ -57,20 +76,9 @@ export default function books(state = INITIAL_STATE, action) {
         break;
       }
 
-      case Types.CHECK_BOOK_FAVORITE: {
-        const {books} = draft;
+      case Types.BOOK_SELECIONADO: {
+        draft.bookSelecionado = action.payload.book;
 
-        if (Array.isArray(books)) {
-          const indexBook = books.findIndex(
-            (book) => book.id !== action.payload.idBook,
-          );
-
-          if (indexBook > -1) {
-            books[indexBook].isFavorite = true;
-          } else {
-            books[indexBook].isFavorite = false;
-          }
-        }
         break;
       }
 
@@ -99,8 +107,8 @@ export const Creators = {
     payload: {idBook},
   }),
 
-  checkBookIsFavorite: ({idBook}) => ({
-    type: Types.CHECK_BOOK_FAVORITE,
-    payload: {idBook},
+  bookSelecionado: ({book}) => ({
+    type: Types.BOOK_SELECIONADO,
+    payload: {book},
   }),
 };

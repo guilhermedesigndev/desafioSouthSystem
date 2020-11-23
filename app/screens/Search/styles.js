@@ -72,6 +72,7 @@ export const ListItemText = styled.Text`
   font-size: ${theme.sizes.base}px;
   color: ${theme.colors.gray};
   margin: 3px 0px;
+  margin-left: ${(props) => (props.marginLeft ? 5 : 0)}px;
 `;
 
 export const ListDateContainer = styled.View`

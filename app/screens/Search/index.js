@@ -5,6 +5,8 @@ import Icon from '~/components/Icon';
 import EmpryState from '~/components/EmptyState';
 import ImageBook from '~/components/ImageBook';
 
+import dayjs from '~/services/dayjs';
+
 import * as theme from '~/styles/theme';
 
 import BookDetail from '~/screens/BookDetail';
@@ -35,7 +37,6 @@ export default function Search() {
 
   const modalizeRef = useRef(null);
 
-  const [bookSelected, setBookSelected] = useState(null);
   const [textSearch, setTextSearch] = useState('');
 
   const books = useSelector((state) => state.books.books);
@@ -55,7 +56,7 @@ export default function Search() {
   function renderItem({item}) {
     return (
       <ListItemContainer
-        onPressIn={() => setBookSelected(item)}
+        onPressIn={() => dispatch(BooksActions.bookSelecionado({book: item}))}
         onPress={openModal}>
         <ListItemWrapper>
           <ImageBook source={item?.volumeInfo?.imageLinks?.thumbnail} />
@@ -67,8 +68,15 @@ export default function Search() {
             )}
 
             <ListDateContainer>
-              <Icon name="calendar-outline" color={theme.colors.gray} />
-              <ListItemText>{item?.volumeInfo?.publishedDate}</ListItemText>
+              <Icon
+                name="calendar-outline"
+                color={theme.colors.gray}
+                width={14}
+                height={14}
+              />
+              <ListItemText marginLeft>
+                {dayjs(item?.volumeInfo?.publishedDate).format('YYYY')}
+              </ListItemText>
             </ListDateContainer>
           </ListItemBook>
         </ListItemWrapper>
@@ -120,7 +128,7 @@ export default function Search() {
       </Wrapper>
 
       <Modalize ref={modalizeRef} snapPoint={400}>
-        <BookDetail book={bookSelected} />
+        <BookDetail />
       </Modalize>
     </Container>
   );
