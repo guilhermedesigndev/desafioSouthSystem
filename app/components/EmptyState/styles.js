@@ -33,3 +33,12 @@ export const ButtonActionLabel = styled.Text`
   font-size: ${theme.sizes.h2}px;
   color: ${theme.colors.black};
 `;
+
+export const Loading = styled.ActivityIndicator.attrs({
+  size: 'small',
+  color: theme.colors.primary,
+})`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;

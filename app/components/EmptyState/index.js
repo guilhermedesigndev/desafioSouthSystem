@@ -1,14 +1,20 @@
 import React from 'react';
 
-import {EmptyContainer, ImageEmpty, EmptyText} from './styles';
+import {EmptyContainer, ImageEmpty, EmptyText, Loading} from './styles';
 
-export default function EmptyState({image, title, footer}) {
+export default function EmptyState({image, title, footer, loading}) {
   return (
     <EmptyContainer>
-      <ImageEmpty source={image} />
-      <EmptyText>{title}</EmptyText>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <ImageEmpty source={image} />
+          <EmptyText>{title}</EmptyText>
 
-      {footer}
+          {footer}
+        </>
+      )}
     </EmptyContainer>
   );
 }

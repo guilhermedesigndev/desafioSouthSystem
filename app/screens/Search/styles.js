@@ -10,6 +10,12 @@ export const Container = styled.View`
   background: ${theme.colors.white};
 `;
 
+export const Wrapper = styled.View`
+  flex: 1;
+  margin: 24px 24px 0 20px;
+  background: ${theme.colors.white};
+`;
+
 export const InputContainer = styled.View`
   width: 100%;
   height: 60px;
@@ -19,6 +25,7 @@ export const InputContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 14px;
 `;
 
 export const Input = styled.TextInput`
@@ -26,8 +33,9 @@ export const Input = styled.TextInput`
   height: 60px;
   font-size: ${theme.sizes.h2}px;
   font-family: ${theme.fonts.regular};
-  padding: 14px;
 `;
+
+export const IconSearch = styled.TouchableOpacity``;
 
 export const ListBooks = styled.FlatList``;
 
@@ -50,11 +58,6 @@ export const ListItemWrapper = styled.View`
 
 export const ListItemBook = styled.View`
   margin-left: 5px;
-`;
-
-export const ListItemImage = styled.Image`
-  box-shadow: 4px 10px 40px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
 `;
 
 export const ListItemTitle = styled.Text`

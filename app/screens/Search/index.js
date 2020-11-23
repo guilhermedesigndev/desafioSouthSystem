@@ -1,8 +1,9 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {Modalize} from 'react-native-modalize';
 
 import Icon from '~/components/Icon';
 import EmpryState from '~/components/EmptyState';
+import ImageBook from '~/components/ImageBook';
 
 import * as theme from '~/styles/theme';
 
@@ -13,20 +14,21 @@ import {Creators as BooksActions} from '~/store/ducks/books';
 
 import {
   Container,
+  Wrapper,
   InputContainer,
   Input,
+  IconSearch,
   ListBooks,
   SeparatorList,
   ListItemContainer,
   ListItemWrapper,
   ListItemBook,
-  ListItemImage,
   ListItemTitle,
   ListItemText,
   ListDateContainer,
 } from './styles';
 
-import Image from '~/assets/images/home.png';
+import Image from '~/assets/images/search.png';
 
 export default function Search() {
   const dispatch = useDispatch();
@@ -34,16 +36,17 @@ export default function Search() {
   const modalizeRef = useRef(null);
 
   const [bookSelected, setBookSelected] = useState(null);
+  const [textSearch, setTextSearch] = useState('');
 
   const books = useSelector((state) => state.books.books);
+  const loading = useSelector((state) => state.books.booksLoading);
 
-  function getBook(event) {
-    const {text} = event.nativeEvent;
-
-    if (text.trim().length > 2) {
-      dispatch(BooksActions.getBooks({name: text}));
-    }
-  }
+  useEffect(() => {
+    return () => {
+      setTextSearch('');
+      dispatch(BooksActions.cleanBooks({}));
+    };
+  }, [dispatch]);
 
   function openModal() {
     modalizeRef.current?.open();
@@ -55,16 +58,12 @@ export default function Search() {
         onPressIn={() => setBookSelected(item)}
         onPress={openModal}>
         <ListItemWrapper>
-          <ListItemImage
-            style={{width: 90, height: 120}}
-            resizeMode="contain"
-            source={{uri: `${item?.volumeInfo?.imageLinks?.thumbnail}`}}
-          />
+          <ImageBook source={item?.volumeInfo?.imageLinks?.thumbnail} />
 
           <ListItemBook>
             <ListItemTitle>{item?.volumeInfo?.title}</ListItemTitle>
             {item?.volumeInfo?.authors && (
-              <ListItemText margin>{item?.volumeInfo?.authors[0]}</ListItemText>
+              <ListItemText>{item?.volumeInfo?.authors[0]}</ListItemText>
             )}
 
             <ListDateContainer>
@@ -81,29 +80,46 @@ export default function Search() {
 
   return (
     <Container>
-      <InputContainer>
-        <Input
-          placeholder="Digite aqui o nome do livro"
-          placeholderTextColor={'#B0B0C3'}
-          autoFocus
-          onChange={getBook}
-        />
+      <Wrapper>
+        <InputContainer>
+          <Input
+            placeholder="Digite aqui o nome do livro"
+            placeholderTextColor={'#B0B0C3'}
+            autoFocus
+            onChangeText={(text) => setTextSearch(text)}
+            onSubmitEditing={() =>
+              dispatch(BooksActions.getBooks({name: textSearch}))
+            }
+            value={textSearch}
+          />
 
-        <Icon name={'search'} />
-      </InputContainer>
+          <IconSearch
+            onPress={() => {
+              setTextSearch('');
+              dispatch(BooksActions.cleanBooks({}));
+            }}>
+            <Icon name={textSearch ? 'close-outline' : 'search'} />
+          </IconSearch>
+        </InputContainer>
 
-      {books.length > 0 ? (
-        <ListBooks
-          data={books}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-          ItemSeparatorComponent={() => <SeparatorList />}
-        />
-      ) : (
-        <EmpryState image={Image} title={'Nenhum livro encontrado aqui'} />
-      )}
+        {books.length > 0 ? (
+          <ListBooks
+            data={books}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItem}
+            contentContainerStyle={{margin: 24}}
+            ItemSeparatorComponent={() => <SeparatorList />}
+          />
+        ) : (
+          <EmpryState
+            loading={loading}
+            image={Image}
+            title={'Nenhum livro encontrado aqui'}
+          />
+        )}
+      </Wrapper>
 
-      <Modalize ref={modalizeRef} snapPoint={500}>
+      <Modalize ref={modalizeRef} snapPoint={400}>
         <BookDetail book={bookSelected} />
       </Modalize>
     </Container>
