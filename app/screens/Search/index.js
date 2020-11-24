@@ -54,18 +54,18 @@ export default function Search() {
   }
 
   function renderItem({item}) {
+    const book = item?.volumeInfo;
+
     return (
       <ListItemContainer
         onPressIn={() => dispatch(BooksActions.bookSelecionado({book: item}))}
         onPress={openModal}>
         <ListItemWrapper>
-          <ImageBook source={item?.volumeInfo?.imageLinks?.thumbnail} />
+          <ImageBook source={book?.imageLinks?.thumbnail} />
 
           <ListItemBook>
-            <ListItemTitle>{item?.volumeInfo?.title}</ListItemTitle>
-            {item?.volumeInfo?.authors && (
-              <ListItemText>{item?.volumeInfo?.authors[0]}</ListItemText>
-            )}
+            <ListItemTitle>{book?.title}</ListItemTitle>
+            {book?.authors && <ListItemText>{book?.authors[0]}</ListItemText>}
 
             <ListDateContainer>
               <Icon
@@ -75,7 +75,7 @@ export default function Search() {
                 height={14}
               />
               <ListItemText marginLeft>
-                {dayjs(item?.volumeInfo?.publishedDate).format('YYYY')}
+                {dayjs(book?.publishedDate).format('YYYY')}
               </ListItemText>
             </ListDateContainer>
           </ListItemBook>

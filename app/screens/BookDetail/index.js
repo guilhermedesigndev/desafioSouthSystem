@@ -40,16 +40,16 @@ export default function BookDetail() {
     }
   }
 
+  const book = selecionado?.volumeInfo;
+
   return (
     <Container>
       <BookContainer>
-        <ImageBook source={selecionado?.volumeInfo?.imageLinks?.thumbnail} />
+        <ImageBook source={book?.imageLinks?.thumbnail} />
 
         <BookInfoContainer>
           <BookInfoTitleContainer>
-            <BookInfoTitle numberOfLines={1}>
-              {selecionado?.volumeInfo?.title}
-            </BookInfoTitle>
+            <BookInfoTitle numberOfLines={1}>{book?.title}</BookInfoTitle>
 
             <ButtonFavoriteBookContainer>
               <ButtonFavoriteBook onPress={handleFavoriteOrRemove}>
@@ -65,9 +65,7 @@ export default function BookDetail() {
             </ButtonFavoriteBookContainer>
           </BookInfoTitleContainer>
 
-          {selecionado?.volumeInfo?.authors && (
-            <BookInfoText>{selecionado?.volumeInfo?.authors[0]}</BookInfoText>
-          )}
+          {book?.authors && <BookInfoText>{book?.authors[0]}</BookInfoText>}
 
           <BookDateContainer>
             <Icon
@@ -77,7 +75,7 @@ export default function BookDetail() {
               height={16}
             />
             <BookInfoText>
-              {dayjs(selecionado?.volumeInfo?.publishedDate).format('YYYY')}
+              {dayjs(book?.publishedDate).format('YYYY')}
             </BookInfoText>
           </BookDateContainer>
 
@@ -88,25 +86,19 @@ export default function BookDetail() {
               width={16}
               height={16}
             />
-            <BookInfoText>
-              {selecionado?.volumeInfo?.pageCount} Paginas
-            </BookInfoText>
+            <BookInfoText>{book?.pageCount} Paginas</BookInfoText>
           </BookPageContainer>
-          {selecionado?.volumeInfo?.categories && (
-            <BookCategoryLabel>
-              {selecionado?.volumeInfo?.categories[0]}
-            </BookCategoryLabel>
+          {book?.categories && (
+            <BookCategoryLabel>{book?.categories[0]}</BookCategoryLabel>
           )}
         </BookInfoContainer>
       </BookContainer>
 
-      {selecionado?.volumeInfo?.description && (
+      {book?.description && (
         <BookDescriptionContainer>
           <BookDescriptionLabel>Descriçao</BookDescriptionLabel>
 
-          <BookDescriptionText>
-            {selecionado?.volumeInfo?.description}
-          </BookDescriptionText>
+          <BookDescriptionText>{book?.description}</BookDescriptionText>
         </BookDescriptionContainer>
       )}
     </Container>
